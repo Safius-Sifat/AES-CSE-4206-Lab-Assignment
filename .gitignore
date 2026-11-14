@@ -1,0 +1,24 @@
+# .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+
+# Pytest cache
+.pytest_cache/
+
+# Build artifacts
+build/
+Dist/
+*.egg-info/
+
+# Environment files
+.env
+
+# IDE files
+.vscode/
+.idea/
