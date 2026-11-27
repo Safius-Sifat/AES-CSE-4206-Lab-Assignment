@@ -12,18 +12,18 @@ AES-Algorithm/
 │   ├── aes_tables.py          # S‑Box and inverse S‑Box
 │   ├── key_expansion.py       # Key schedule
 │   ├── encryption.py          # Encryption of a single block
-│   └── decryption.py          # Decryption of a single block
+│   └── decryption.py          # Planned: Member 3
 │
 ├── tests/
-│   ├── test_key_expansion.py
+│   ├── test_key_expansion.py  # Planned: Member 1
 │   ├── test_encryption.py
-│   └── test_decryption.py
+│   └── test_decryption.py     # Planned: Member 3
 │
 ├── main.py                    # Example usage / entry point
 ├── requirements.txt
 ├── .gitignore
 ├── README.md
-└── CONTRIBUTING.md
+└── CONTRIBUTING.md            # Planned
 ```
 
 ## API Contract
@@ -47,4 +47,28 @@ python -m pytest
 ```
 
 ## Contributing
-Please work on a feature branch, push regularly, and open a Pull Request when your feature is ready. See `CONTRIBUTING.md` for details.
+Please work on a feature branch, push regularly, and open a Pull Request when your feature is ready.
+
+## Member 2 status: encryption complete
+
+`encrypt_block(plaintext, round_keys)` accepts a 16-byte plaintext and eleven
+16-byte round keys (K0-K10), and returns a 16-byte ciphertext. It implements
+column-major state conversion, AddRoundKey, SubBytes, ShiftRows, and MixColumns,
+with no MixColumns in round 10. An optional `trace_callback(round, stage, state)`
+receives independent state snapshots for demonstrations.
+
+Encryption uses the shared `aes_tables.sub_byte` and `gf_arithmetic.gf_multiply`
+functions. The duplicate temporary `aes_support.py` is no longer needed.
+
+Run `python main.py` for a traced example using fixed reference round keys.
+The expected ciphertext is `69c4e0d86a7b0430d8cdb78070b4c55a`.
+Run `python -m pytest -q` for known-answer vectors, intermediate round states,
+input validation, and callback isolation checks.
+
+Reference vectors: [FIPS 197](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf)
+and [SP 800-38A](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf).
+
+Integration remains pending: Member 1's `key_expansion` and the inverse S-box
+are placeholders on this branch, and Member 3's decryption module is not present.
+Replace the demo's fixed round keys with `key_expansion(key)` when that work lands.
+These are separate from Member 2's supplied-round-key encryption interface.
