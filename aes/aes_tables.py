@@ -30,6 +30,11 @@ def sub_byte(value: int) -> int:
         raise ValueError("Byte value must be in 0..255")
     return S_BOX[value]
 
+INV_S_BOX = tuple(
+    idx for _, idx in sorted((val, idx) for idx, val in enumerate(S_BOX))
+)
+
+
 def inv_sub_byte(value: int) -> int:
     """Inverse S-Box substitution.
 
@@ -40,4 +45,4 @@ def inv_sub_byte(value: int) -> int:
     """
     if not (0 <= value <= 0xFF):
         raise ValueError("Byte value must be in 0..255")
-    raise NotImplementedError
+    return INV_S_BOX[value]

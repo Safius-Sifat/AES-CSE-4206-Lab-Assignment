@@ -83,13 +83,13 @@ def decrypt_block(ciphertext: bytes, round_keys: list) -> bytes:
         The decrypted 16-byte plaintext block.
     """
 
-    if len(ciphertext) != 16:
+    if not isinstance(ciphertext, bytes) or len(ciphertext) != 16:
         raise ValueError("Ciphertext must be exactly 16 bytes")
 
     if len(round_keys) != 11:
         raise ValueError("AES-128 requires exactly 11 round keys")
 
-    if any(len(key) != 16 for key in round_keys):
+    if any(not isinstance(key, bytes) or len(key) != 16 for key in round_keys):
         raise ValueError("Each round key must be exactly 16 bytes")
 
     state = bytes_to_state(ciphertext)
